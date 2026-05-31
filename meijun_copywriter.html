@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美君老師專屬・樂足蒸屋・社群文案生成器</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Noto Sans TC', 'PingFang TC', sans-serif; background: #fdf7f2; color: #2d3748; padding: 20px 16px 60px; }
+        .page { max-width: 1200px; margin: 0 auto; }
+
+        .header { text-align: center; margin-bottom: 24px; }
+        .header-tag { display: inline-block; background: #b5651d; color: #fff; font-size: 10px; font-weight: 900; letter-spacing: 2px; padding: 5px 16px; border-radius: 99px; margin-bottom: 12px; }
+        .header h1 { font-size: 24px; font-weight: 900; color: #2d3748; line-height: 1.4; }
+        .header h1 span { color: #b5651d; }
+        .header p { font-size: 11px; color: #a0aec0; margin-top: 6px; letter-spacing: 1.5px; }
+
+        .main-layout { display: grid; grid-template-columns: 340px 1fr; gap: 20px; align-items: start; }
+        @media (max-width: 860px) { .main-layout { grid-template-columns: 1fr; } }
+
+        .left-card { background: #fff; border-radius: 36px; padding: 28px 24px; box-shadow: 0 4px 24px rgba(181,101,29,0.08); border: 1px solid rgba(181,101,29,0.1); position: relative; overflow: hidden; }
+        .left-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #b5651d; }
+
+        .api-wrap { background: #fff8f2; border: 1.5px solid #f5d5b0; border-radius: 16px; padding: 14px 16px; margin-bottom: 24px; }
+        .api-label { font-size: 12px; font-weight: 900; color: #b5651d; margin-bottom: 8px; }
+        .api-row { display: flex; gap: 8px; }
+        .api-input { flex: 1; padding: 10px 14px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 13px; background: #fff; color: #2d3748; letter-spacing: 2px; font-family: inherit; transition: all 0.2s; }
+        .api-input:focus { outline: none; border-color: #b5651d; box-shadow: 0 0 0 3px rgba(181,101,29,0.1); }
+        .eye-btn { background: #f7f7f7; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 8px 12px; cursor: pointer; font-size: 15px; color: #a0aec0; transition: all 0.2s; }
+        .eye-btn:hover { border-color: #b5651d; color: #b5651d; }
+        .api-hint { font-size: 11px; color: #a0aec0; margin-top: 7px; line-height: 1.6; }
+        .api-hint a { color: #b5651d; font-weight: 700; text-decoration: none; }
+
+        .model-row { display: flex; gap: 6px; margin-top: 10px; }
+        .model-btn { flex: 1; padding: 7px 4px; border-radius: 10px; font-size: 11px; font-weight: 700; font-family: inherit; cursor: pointer; border: 1.5px solid #e2e8f0; background: #f7f7f7; color: #718096; transition: all 0.2s; text-align: center; }
+        .model-btn.active { background: #fff8f2; border-color: #b5651d; color: #b5651d; }
+        .model-btn:hover:not(.active) { border-color: #b5651d; color: #b5651d; }
+
+        .menu-header { font-size: 20px; font-weight: 900; color: #2d3748; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .style-list { display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px; }
+        .style-btn { width: 100%; padding: 22px 20px; border-radius: 22px; font-size: 17px; font-weight: 900; font-family: inherit; cursor: pointer; transition: all 0.25s; text-align: center; border: none; line-height: 1.3; }
+        .style-btn.inactive { background: #f5f5f7; color: #2d3748; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .style-btn.inactive:hover { background: #fff; box-shadow: 0 4px 16px rgba(181,101,29,0.15); color: #b5651d; }
+        .style-btn.active { background: #b5651d; color: #fff; box-shadow: 0 6px 24px rgba(181,101,29,0.4); transform: translateY(-1px); }
+        .style-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+        .tool-label { font-size: 11px; font-weight: 900; color: #a0aec0; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
+        .tools-row { display: flex; gap: 8px; margin-bottom: 6px; }
+        .tool-link { flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px; padding: 11px 6px; border-radius: 14px; font-size: 13px; font-weight: 800; text-decoration: none; color: #fff; transition: all 0.2s; }
+        .tool-link:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .t-gemini  { background: #4285F4; }
+        .t-chatgpt { background: #10a37f; }
+        .t-fb      { background: #1877f2; }
+        .t-ig      { background: #e1306c; }
+        .t-threads { background: #333; }
+        .tools-hint { font-size: 11px; color: #c0c8d8; text-align: center; margin-top: 5px; }
+
+        .right-area { display: flex; flex-direction: column; gap: 14px; }
+        .status-bar { background: #fff8f2; border: 1.5px solid #f5d5b0; border-radius: 16px; padding: 14px 18px; color: #b5651d; font-weight: 900; font-size: 14px; text-align: center; display: none; }
+        .status-bar.error { background: #fff5f5; border-color: #fed7d7; color: #e53e3e; }
+        .progress-bar { height: 3px; background: #f5d5b0; border-radius: 99px; overflow: hidden; margin-top: 8px; display: none; }
+        .progress-fill { height: 100%; background: #b5651d; border-radius: 99px; width: 0%; transition: width 0.4s ease; }
+
+        .cols-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        @media (max-width: 860px) { .cols-grid { grid-template-columns: 1fr; } .tools-row { flex-wrap: wrap; } .tool-link { flex: 1 1 40%; } }
+        .col { background: #fff; border-radius: 24px; padding: 20px; display: flex; flex-direction: column; box-shadow: 0 4px 16px rgba(0,0,0,0.04); min-height: 360px; border: 1px solid #f5ede4; }
+        .col-fb { border-top: 5px solid #1877f2; }
+        .col-ig { border-top: 5px solid #e1306c; }
+        .col-threads { border-top: 5px solid #3d3d3d; }
+        .col-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid #f0f4f8; }
+        .col-name { font-weight: 900; font-size: 13px; font-style: italic; }
+        .n-fb { color: #1877f2; } .n-ig { color: #e1306c; } .n-threads { color: #3d3d3d; }
+        .copy-btn { background: #fff; border: 1.5px solid #e2e8f0; border-radius: 20px; padding: 4px 14px; font-size: 11px; font-weight: 900; color: #a0aec0; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+        .copy-btn:hover { background: #b5651d; color: #fff; border-color: #b5651d; }
+        .output-box { flex: 1; background: #fdfaf7; border: 1.5px solid #edf2f7; border-radius: 14px; padding: 14px; font-size: 13.5px; line-height: 1.8; white-space: pre-wrap; color: #4a5568; overflow-y: auto; min-height: 280px; transition: all 0.3s; }
+        .output-box.loading { color: #c0c8d0; font-style: italic; }
+        .output-box.done { border-color: #f5d5b0; }
+
+        @keyframes cursor-blink { 0%,100%{opacity:1} 50%{opacity:0} }
+        .cursor { display: inline-block; width: 2px; height: 1em; background: #b5651d; vertical-align: middle; margin-left: 2px; animation: cursor-blink 0.8s infinite; }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="header">
+        <div class="header-tag">✦ 樂足蒸屋 · 健康生活老師</div>
+        <h1>🌿 <span>美君老師</span> 專屬<br>樂足蒸屋・社群文案生成器</h1>
+        <p>溫暖布施・20年健康資歷・美業雙軌創業家・基督信仰｜Gemini AI 即時生成</p>
+    </div>
+
+    <div class="main-layout">
+        <div class="left-card">
+            <div class="api-wrap">
+                <div class="api-label">🔑 Gemini API Key</div>
+                <div class="api-row">
+                    <input type="password" id="userApiKey" class="api-input" placeholder="AIzaSy...">
+                    <button class="eye-btn" onclick="toggleKey()">👁</button>
+                </div>
+                <div class="model-row">
+                    <button class="model-btn active" id="m-flash" onclick="setModel('gemini-2.0-flash')">2.0 Flash ⚡</button>
+                    <button class="model-btn" id="m-pro" onclick="setModel('gemini-1.5-pro')">1.5 Pro 🧠</button>
+                </div>
+                <div class="api-hint">沒有金鑰？<a href="https://aistudio.google.com/app/apikey" target="_blank">點此免費申請</a>（每天 1,500 次免費）</div>
+            </div>
+
+            <div class="menu-header">🚀 風格選單</div>
+            <div class="style-list">
+                <button class="style-btn inactive" id="btn-book"   onclick="generate('book')">🎯 走進樂足・預約蒸屋</button>
+                <button class="style-btn inactive" id="btn-story"  onclick="generate('story')">🌸 美君日常・善念布施</button>
+                <button class="style-btn inactive" id="btn-health" onclick="generate('health')">💡 健康開講・20年營養學</button>
+                <button class="style-btn inactive" id="btn-biz"    onclick="generate('biz')">🤝 美姐經商・零元實戰</button>
+            </div>
+
+            <div class="tool-label">🤖 AI 潤飾工具</div>
+            <div class="tools-row" style="margin-bottom:16px;">
+                <a href="https://gemini.google.com/" target="_blank" class="tool-link t-gemini">✦ Gemini</a>
+                <a href="https://chatgpt.com/" target="_blank" class="tool-link t-chatgpt">⚡ ChatGPT</a>
+            </div>
+            <div class="tool-label">📲 直接發文</div>
+            <div class="tools-row">
+                <a href="https://www.facebook.com/" target="_blank" class="tool-link t-fb">f FB</a>
+                <a href="https://www.instagram.com/" target="_blank" class="tool-link t-ig">📷 IG</a>
+                <a href="https://www.threads.net/" target="_blank" class="tool-link t-threads">@ TH</a>
+            </div>
+            <div class="tools-hint">複製文案 → 點平台 → 貼上發文</div>
+        </div>
+
+        <div class="right-area">
+            <div id="statusBar" class="status-bar">
+                <span id="statusText"></span>
+                <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
+            </div>
+            <div class="cols-grid">
+                <div class="col col-fb">
+                    <div class="col-head"><span class="col-name n-fb">FB 生命觀點長文版</span><button class="copy-btn" onclick="copyCol('out-fb',this)">複製</button></div>
+                    <div id="out-fb" class="output-box">點擊左側按鈕開始生成...</div>
+                </div>
+                <div class="col col-ig">
+                    <div class="col-head"><span class="col-name n-ig">IG 質感精簡版</span><button class="copy-btn" onclick="copyCol('out-ig',this)">複製</button></div>
+                    <div id="out-ig" class="output-box">點擊左側按鈕開始生成...</div>
+                </div>
+                <div class="col col-threads">
+                    <div class="col-head"><span class="col-name n-threads">Threads 口語布施版</span><button class="copy-btn" onclick="copyCol('out-threads',this)">複製</button></div>
+                    <div id="out-threads" class="output-box">點擊左側按鈕開始生成...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let selectedModel = 'gemini-2.0-flash';
+
+const PERSONA = `你現在要完全化身為「謝美君（美君老師）」的專屬社群文案助理。
+
+核心人設背景：
+- 女，50歲以上，現任「謝美君的樂足蒸屋」掌舵人
+- 美髮產業成功創業者：豐富門店經營、客情服務與形象管理實戰經驗
+- 20年健康營養產業老兵：全方位健康管理、高階營養補充觀念、樂齡健康服務經驗
+- 虔誠的基督徒：善在文字中默默分享善念、凡事謝恩、傳遞神的愛與溫暖
+- 社群稱呼：美君老師（展現20年專業底蘊，知性溫暖）
+
+核心風格：
+- 溫暖系老師：傾聽陪伴、捨己布施、知性而不失親切
+- 幽默實戰派：自嘲接地氣、白話談健康，讓人覺得美君老師真實可信
+- 親切創業家：分享門店與團隊開發思維，用生命影響生命
+- 常用視角：「以前做美髮時，我幫客人打理外在的漂亮；現在在樂足蒸屋，我更想陪你們找回身體內在的活力與光彩。」「凡事謝恩，神給我們最棒的資產，就是這副健康的身體。」
+
+嚴格禁止：
+- 禁止提及：直銷、賀寶芙、Herbalife、奶昔、拉人、下線、躺賺、暴富
+- 禁止使用「阿美姐」稱呼，統一使用「美君老師」
+- 營養補充品一律包裝為「20年生活營養管理」「陪伴式健康微調」「全方位身體滋養計劃」
+- 用高含金量的生命故事吸引人，拒絕生硬廣告推銷`;
+
+const PROMPTS = {
+    book: `觸發主題：走進樂足・預約蒸屋
+目標：直擊現代人代謝下降、容易疲勞、健康焦慮的痛點，帶動實體預約。
+寫法：從生活陪伴角度出發，描寫忙碌生活如何虧待了身體。邀請大家來樂足蒸屋透過溫暖蒸足放鬆，找回久違的活力。結尾溫柔引導「私訊美君老師預約」。`,
+    story: `觸發主題：美君日常・善念布施
+目標：完全不帶商業推銷，分享美君老師的基督信仰、生活感恩、捨己布施的心情。
+寫法：分享在店裡、生活中、教會裡看見的感動小故事。用幽默接地氣卻充滿神恩典與正能量的語氣，為社群上焦慮孤單的靈魂提供情感支持與溫柔鼓勵。`,
+    health: `觸發主題：健康開講・20年營養學
+目標：解決現代人飲食不均衡、體重控制困難、活力下降等健康痛點。
+寫法：結合美髮時代對形象管理的敏銳度，加上20年健康產業底蘊，用最白話的語言解釋健康生活習慣調整與全方位身體滋養計劃的核心。強調健康是全人（身心靈）的平衡。`,
+    biz: `觸發主題：美姐經商・零元實戰
+目標：吸引面臨財務瓶頸、渴望開創門店、提升生活品質的潛在創業者。
+寫法：以「美髮、健康雙軌成功創業家」的高度，溫柔且堅定喊話。分享二十幾年門店經營、客戶服務與團隊管理實戰。用不藏私的生命布施，激勵陪伴下一代創業者成功。`
+};
+
+function toggleKey() {
+    const el = document.getElementById('userApiKey');
+    el.type = el.type === 'password' ? 'text' : 'password';
+}
+
+function setModel(model) {
+    selectedModel = model;
+    document.getElementById('m-flash').classList.toggle('active', model === 'gemini-2.0-flash');
+    document.getElementById('m-pro').classList.toggle('active', model === 'gemini-1.5-pro');
+}
+
+function setStatus(msg, isError) {
+    const bar = document.getElementById('statusBar');
+    bar.style.display = 'block';
+    bar.className = 'status-bar' + (isError ? ' error' : '');
+    document.getElementById('statusText').textContent = msg;
+    document.getElementById('progressBar').style.display = isError ? 'none' : 'block';
+}
+function setProgress(pct) { document.getElementById('progressFill').style.width = pct + '%'; }
+function hideStatus() { document.getElementById('statusBar').style.display = 'none'; }
+function setLoading(id, msg) { const el = document.getElementById(id); el.className = 'output-box loading'; el.textContent = msg; }
+function setDone(id, text) { const el = document.getElementById(id); el.className = 'output-box done'; el.textContent = text; }
+
+function typewriter(id, text, totalMs) {
+    return new Promise(resolve => {
+        const el = document.getElementById(id);
+        el.className = 'output-box done';
+        el.textContent = '';
+        const cursor = document.createElement('span');
+        cursor.className = 'cursor';
+        el.appendChild(cursor);
+        let i = 0;
+        const speed = Math.min(10, Math.max(2, Math.floor(totalMs / text.length)));
+        const timer = setInterval(() => {
+            if (i < text.length) { el.insertBefore(document.createTextNode(text[i++]), cursor); }
+            else { clearInterval(timer); cursor.remove(); resolve(); }
+        }, speed);
+    });
+}
+
+async function callGemini(apiKey, prompt) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${apiKey}`;
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { temperature: 0.95, maxOutputTokens: 2048 }
+        })
+    });
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err?.error?.message || `HTTP ${res.status}`);
+    }
+    const data = await res.json();
+    return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+}
+
+async function generate(type) {
+    const apiKey = document.getElementById('userApiKey').value.trim();
+    if (!apiKey) {
+        setStatus('⚠️ 請先填入 Gemini API Key！', true);
+        document.getElementById('userApiKey').focus();
+        return;
+    }
+    if (!apiKey.startsWith('AIza')) {
+        setStatus('⚠️ API Key 格式不正確，請確認是否以 AIzaSy 開頭', true);
+        return;
+    }
+
+    document.querySelectorAll('.style-btn').forEach(b => { b.classList.remove('active'); b.classList.add('inactive'); b.disabled = true; });
+    document.getElementById('btn-' + type).classList.add('active');
+    document.getElementById('btn-' + type).classList.remove('inactive');
+
+    setStatus('🌿 美君老師的文案生成中，請稍候...', false);
+    setProgress(10);
+    setLoading('out-fb', '生命觀點長文撰寫中...');
+    setLoading('out-ig', '質感精簡版生成中...');
+    setLoading('out-threads', '口語布施金句醞釀中...');
+
+    const fullPrompt = `${PERSONA}\n\n${PROMPTS[type]}\n\n平台規則：
+- FB（生命觀點長文版）：深刻生命觀點、信仰感恩、創業邏輯，段落清晰，字數200-350字
+- IG（質感精簡版）：溫暖短標題開頭，精簡俐落，附5-8個精準hashtag
+- Threads（口語布施版）：知性大姐大觀點、帶幽默互動問句，字數50-80字
+
+請只回傳 JSON，不要任何 Markdown 標記或說明文字：
+{"fb":"完整FB文案","ig":"完整IG文案含hashtag","threads":"完整Threads短文"}`;
+
+    try {
+        setProgress(30);
+        const raw = await callGemini(apiKey, fullPrompt);
+        setProgress(75);
+
+        let json;
+        try {
+            json = JSON.parse(raw.replace(/```json|```/g, '').trim());
+        } catch {
+            setDone('out-fb', raw);
+            setDone('out-ig', '⚠️ JSON 解析失敗，完整文案已顯示在左側');
+            setDone('out-threads', '');
+            setStatus('⚠️ 文案已生成但格式異常，建議換 1.5 Pro 重試', true);
+            return;
+        }
+
+        setProgress(90);
+        hideStatus();
+        await typewriter('out-fb', json.fb || '', 1800);
+        await typewriter('out-ig', json.ig || '', 800);
+        await typewriter('out-threads', json.threads || '', 500);
+        setProgress(100);
+
+    } catch (err) {
+        let msg = err.message;
+        if (msg.includes('API_KEY_INVALID') || msg.includes('API key not valid')) msg = 'API Key 無效，請重新確認金鑰';
+        else if (msg.includes('QUOTA_EXCEEDED') || msg.includes('429') || msg.includes('high demand')) msg = '今日免費額度已用完或伺服器忙碌，請稍後再試';
+        else if (msg.includes('Failed to fetch') || msg.includes('NetworkError')) msg = '網路連線失敗，請確認網路後重試';
+        setDone('out-fb', '❌ 生成失敗');
+        setDone('out-ig', '');
+        setDone('out-threads', '');
+        setStatus('❌ ' + msg, true);
+    } finally {
+        document.querySelectorAll('.style-btn').forEach(b => { b.disabled = false; });
+    }
+}
+
+function copyCol(id, btn) {
+    const text = document.getElementById(id).innerText;
+    if (!text || text.startsWith('點擊') || text.startsWith('生命') || text.startsWith('質感') || text.startsWith('口語') || text.startsWith('❌') || text.startsWith('⚠️')) return;
+    navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.innerText;
+        btn.innerText = '✓ 已複製';
+        setTimeout(() => btn.innerText = orig, 2000);
+    });
+}
+</script>
+</body>
+</html>
