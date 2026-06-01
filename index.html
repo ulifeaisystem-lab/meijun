@@ -34,13 +34,14 @@
 
         .model-row { display: flex; gap: 6px; margin-top: 10px; }
         .model-btn { flex: 1; padding: 7px 4px; border-radius: 10px; font-size: 11px; font-weight: 700; font-family: inherit; cursor: pointer; border: 1.5px solid #e2e8f0; background: #f7f7f7; color: #718096; transition: all 0.2s; text-align: center; }
-        .model-btn.active { background: #fff8f2; border-color: #b5651d; color: #b5651d; }
+        .model-btn.active { background: #fff8f2; border-color: #b5651d; color: #b5651d; font-weight: 900; }
+        .model-btn:hover:not(.active) { border-color: #b5651d; color: #b5651d; }
 
         .menu-header { font-size: 20px; font-weight: 900; color: #2d3748; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
         .style-list { display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px; }
         .style-btn { width: 100%; padding: 22px 20px; border-radius: 22px; font-size: 17px; font-weight: 900; font-family: inherit; cursor: pointer; transition: all 0.25s; text-align: center; border: none; line-height: 1.3; }
         .style-btn.inactive { background: #f5f5f7; color: #2d3748; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .style-btn.inactive:hover { background: #fff; box-shadow: 0 4px 16px rgba(181,101,29,0.15); color: #b5651d; }
+        .style-btn.inactive:hover { background: #fff; box-shadow: 0 4px 166px rgba(181,101,29,0.15); color: #b5651d; }
         .style-btn.active { background: #b5651d; color: #fff; box-shadow: 0 6px 24px rgba(181,101,29,0.4); transform: translateY(-1px); }
 
         .tool-label { font-size: 11px; font-weight: 900; color: #a0aec0; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
@@ -81,8 +82,8 @@
 <div class="page">
     <div class="header">
         <div class="header-tag">✦ 樂足蒸屋 · 健康生活老師</div>
-        <h1>🌿 <span>美君老師</span> 專專屬<br>樂足蒸屋・社群文案生成器</h1>
-        <p>溫暖布施・20年健康資歷・美業雙軌創業家・基督信仰｜Gemini 2.5 穩定驅動</p>
+        <h1>🌿 <span>美君老師</span> 專屬<br>樂足蒸屋・社群文案生成器</h1>
+        <p>溫慢布施・20年健康資歷・美業雙軌創業家・基督信仰｜Gemini 2.5 穩定驅動</p>
     </div>
 
     <div class="main-layout">
@@ -94,10 +95,10 @@
                     <button class="eye-btn" onclick="toggleKey()">👁</button>
                 </div>
                 <div class="model-row">
-                    <button class="model-btn active" id="m-flash">2.5 Flash ⚡</button>
-                    <button class="model-btn" id="m-pro">永久無限制通道</button>
+                    <button class="model-btn active" id="m-flash" onclick="toggleChannel('flash')">2.5 Flash ⚡</button>
+                    <button class="model-btn" id="m-pro" onclick="toggleChannel('pro')">永久無限制通道</button>
                 </div>
-                <div class="api-hint">系統安全狀態：<span style="color:#b5651d; font-weight:bold;">高階加密加速通道已啟用</span></div>
+                <div class="api-hint">系統安全狀態：<span id="channelStatus" style="color:#b5651d; font-weight:bold;">高階加密加速通道已啟用</span></div>
             </div>
 
             <div class="menu-header">🚀 風格選單</div>
@@ -146,7 +147,7 @@
 </div>
 
 <script>
-// 內建美君老師隨機爆款文案資料庫
+// 內建隨機爆款文案資料庫
 const database = {
     book: [
         {
@@ -157,8 +158,8 @@ const database = {
     ],
     story: [
         {
-            fb: `【凡事謝恩：在樂足蒸屋裡遇見的溫暖光影】\n\n今天店裡來了一位老同學，幾十年沒見，頭髮白了一些，但那份革命情感一點都沒變。我們聊著彼此的創業路，感嘆著神給我們的恩典真的夠用。美君老師常覺得，我這輩子能從美髮轉行到健康產業，其實是神的帶領，讓我有機會成為更多人的陪伴者。\n\n在樂足蒸屋，我不只一是一位的店長，更是一個樂於分享善念的傳道者。看著客人蒸完足後，臉色從蒼白轉為紅潤，露出滿意的笑容，我心裡就充滿感恩。這不只是生意，更是生命影響生命的布施。\n\n每個人的人生都有起伏，但只要心裡有光，腳下的路就不會黑暗。不論妳今天遇到了什麼難關，隨時歡迎來找美君老師聊聊天，我們一起數算恩典，分享善念。祝福大家，今天也活在愛與溫暖中。\n\n#凡事謝恩 #主愛在樂足 #謝美君 #生活感悟 #布施傳道 #溫暖力量`,
-            ig: `💡 每個人心裡，都該有一盞不會熄滅的光。\n\n今天在店裡跟老同學敘舊，感嘆恩典夠用。\n美君老師想告訴妳：生活再累，也要記得凡事謝恩。\n\n樂足蒸屋不只蒸足，也溫暖妳的心。\n有空來找美君老師聊聊天，我們一起分享善念。🌸\n\n#善念布施 #美君老師 #生活美學 #基督信仰 #生命陪伴 #樂足日常`,
+            fb: `【凡事謝恩：在樂足蒸屋裡遇見的溫慢光影】\n\n今天店裡來了一位老同學，幾十年沒見，頭髮白了一些，但那份革命情感一點都沒變。我們聊著彼此的創業路，感嘆著神給我們的恩典真的夠用。美君老師常覺得，我這輩子能從美髮轉行到健康產業，其實是神的帶領，讓我有機會成為更多人的陪伴者。\n\n在樂足蒸屋，我不只是一位店長，更一個樂於分享善念的傳道者。看著客人蒸完足後，臉色從蒼白轉為紅潤，露出滿意的笑容，我心裡就充滿感恩。這不只是生意，更是生命影響生命的布施。\n\n每個人的人生都有起伏，但只要心裡有光，腳下的路就不會黑暗。不論妳今天遇到了什麼難關，隨時歡迎來找美君老師聊聊天，我們一起數算恩典，分享善念。祝福大家，今天也活在愛與溫慢中。\n\n#凡事謝恩 #主愛在樂足 #謝美君 #生活感悟 #布施傳道 #溫慢力量`,
+            ig: `💡 每個人心裡，都該有一盞不會熄滅的光。\n\n今天在店裡跟老同學敘舊，感嘆恩典夠用。\n美君老師想告訴妳：生活再累，也要記得凡事謝恩。\n\n樂足蒸屋不只蒸足，也溫慢妳的心。\n有空來找美君老師聊聊天，我們一起分享善念。🌸\n\n#善念布施 #美君老師 #生活美學 #基督信仰 #生命陪伴 #樂足日常`,
             threads: `美君老師做20年營養產業，感觸最深的一句話是：健康是神的恩典，而陪伴是最好的布施。心情不好、壓力大的時候，來蒸個足，把苦水流掉，把恩典留住。 #美君老師碎碎念 #凡事謝恩 #心靈排毒`
         }
     ],
@@ -183,6 +184,19 @@ function toggleKey() {
     el.type = el.type === 'password' ? 'text' : 'password';
 }
 
+// 補上全功能：讓這兩個模型按鈕可以被點擊、切換亮起！
+function toggleChannel(target) {
+    document.getElementById('m-flash').classList.toggle('active', target === 'flash');
+    document.getElementById('m-pro').classList.toggle('active', target === 'pro');
+    
+    const statusText = document.getElementById('channelStatus');
+    if(target === 'flash') {
+        statusText.innerText = '高階加密加速通道已啟用';
+    } else {
+        statusText.innerText = '永久無限制極速分流已就緒';
+    }
+}
+
 function setStatus(msg, isError) {
     const bar = document.getElementById('statusBar');
     bar.style.display = 'block';
@@ -200,7 +214,6 @@ function typewriter(id, text, totalMs) {
         el.className = 'output-box done';
         el.textContent = '';
         const cursor = document.createElement('span');
-        cursor.cursor = 'cursor';
         cursor.className = 'cursor';
         el.appendChild(cursor);
         let i = 0;
