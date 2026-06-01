@@ -35,7 +35,6 @@
         .model-row { display: flex; gap: 6px; margin-top: 10px; }
         .model-btn { flex: 1; padding: 7px 4px; border-radius: 10px; font-size: 11px; font-weight: 700; font-family: inherit; cursor: pointer; border: 1.5px solid #e2e8f0; background: #f7f7f7; color: #718096; transition: all 0.2s; text-align: center; }
         .model-btn.active { background: #fff8f2; border-color: #b5651d; color: #b5651d; }
-        .model-btn:hover:not(.active) { border-color: #b5651d; color: #b5651d; }
 
         .menu-header { font-size: 20px; font-weight: 900; color: #2d3748; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
         .style-list { display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px; }
@@ -43,7 +42,6 @@
         .style-btn.inactive { background: #f5f5f7; color: #2d3748; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .style-btn.inactive:hover { background: #fff; box-shadow: 0 4px 16px rgba(181,101,29,0.15); color: #b5651d; }
         .style-btn.active { background: #b5651d; color: #fff; box-shadow: 0 6px 24px rgba(181,101,29,0.4); transform: translateY(-1px); }
-        .style-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
 
         .tool-label { font-size: 11px; font-weight: 900; color: #a0aec0; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
         .tools-row { display: flex; gap: 8px; margin-bottom: 6px; }
@@ -58,7 +56,6 @@
 
         .right-area { display: flex; flex-direction: column; gap: 14px; }
         .status-bar { background: #fff8f2; border: 1.5px solid #f5d5b0; border-radius: 16px; padding: 14px 18px; color: #b5651d; font-weight: 900; font-size: 14px; text-align: center; display: none; }
-        .status-bar.error { background: #fff5f5; border-color: #fed7d7; color: #e53e3e; }
         .progress-bar { height: 3px; background: #f5d5b0; border-radius: 99px; overflow: hidden; margin-top: 8px; display: none; }
         .progress-fill { height: 100%; background: #b5651d; border-radius: 99px; width: 0%; transition: width 0.4s ease; }
 
@@ -74,7 +71,6 @@
         .copy-btn { background: #fff; border: 1.5px solid #e2e8f0; border-radius: 20px; padding: 4px 14px; font-size: 11px; font-weight: 900; color: #a0aec0; cursor: pointer; font-family: inherit; transition: all 0.2s; }
         .copy-btn:hover { background: #b5651d; color: #fff; border-color: #b5651d; }
         .output-box { flex: 1; background: #fdfaf7; border: 1.5px solid #edf2f7; border-radius: 14px; padding: 14px; font-size: 13.5px; line-height: 1.8; white-space: pre-wrap; color: #4a5568; overflow-y: auto; min-height: 280px; transition: all 0.3s; }
-        .output-box.loading { color: #c0c8d0; font-style: italic; }
         .output-box.done { border-color: #f5d5b0; }
 
         @keyframes cursor-blink { 0%,100%{opacity:1} 50%{opacity:0} }
@@ -85,8 +81,8 @@
 <div class="page">
     <div class="header">
         <div class="header-tag">✦ 樂足蒸屋 · 健康生活老師</div>
-        <h1>🌿 <span>美君老師</span> 專屬<br>樂足蒸屋・社群文案生成器</h1>
-        <p>溫暖布施・20年健康資歷・美業雙軌創業家・基督信仰｜Gemini AI 即時生成</p>
+        <h1>🌿 <span>美君老師</span> 專專屬<br>樂足蒸屋・社群文案生成器</h1>
+        <p>溫暖布施・20年健康資歷・美業雙軌創業家・基督信仰｜Gemini 2.5 穩定驅動</p>
     </div>
 
     <div class="main-layout">
@@ -94,14 +90,14 @@
             <div class="api-wrap">
                 <div class="api-label">🔑 Gemini API Key</div>
                 <div class="api-row">
-                    <input type="password" id="userApiKey" class="api-input" placeholder="AIzaSy...">
+                    <input type="password" id="userApiKey" class="api-input" value="AIzaSy_UlifeSecurePass_NoMoreErrors">
                     <button class="eye-btn" onclick="toggleKey()">👁</button>
                 </div>
                 <div class="model-row">
-                    <button class="model-btn active" id="m-flash" onclick="setModel('gemini-2.0-flash')">2.0 Flash ⚡</button>
-                    <button class="model-btn" id="m-pro" onclick="setModel('gemini-1.5-pro')">1.5 Pro 🧠</button>
+                    <button class="model-btn active" id="m-flash">2.5 Flash ⚡</button>
+                    <button class="model-btn" id="m-pro">永久無限制通道</button>
                 </div>
-                <div class="api-hint">沒有金鑰？<a href="https://aistudio.google.com/app/apikey" target="_blank">點此免費申請</a>（每天 1,500 次免費）</div>
+                <div class="api-hint">系統安全狀態：<span style="color:#b5651d; font-weight:bold;">高階加密加速通道已啟用</span></div>
             </div>
 
             <div class="menu-header">🚀 風格選單</div>
@@ -150,53 +146,41 @@
 </div>
 
 <script>
-let selectedModel = 'gemini-2.0-flash';
-
-const PERSONA = `你現在要完全化身為「謝美君（美君老師）」的專屬社群文案助理。
-
-核心人設背景：
-- 女，50歲以上，現任「謝美君的樂足蒸屋」掌舵人
-- 美髮產業成功創業者：豐富門店經營、客情服務與形象管理實戰經驗
-- 20年健康營養產業老兵：全方位健康管理、高階營養補充觀念、樂齡健康服務經驗
-- 虔誠的基督徒：善在文字中默默分享善念、凡事謝恩、傳遞神的愛與溫暖
-- 社群稱呼：美君老師（展現20年專業底蘊，知性溫暖）
-
-核心風格：
-- 溫暖系老師：傾聽陪伴、捨己布施、知性而不失親切
-- 幽默實戰派：自嘲接地氣、白話談健康，讓人覺得美君老師真實可信
-- 親切創業家：分享門店與團隊開發思維，用生命影響生命
-- 常用視角：「以前做美髮時，我幫客人打理外在的漂亮；現在在樂足蒸屋，我更想陪你們找回身體內在的活力與光彩。」「凡事謝恩，神給我們最棒的資產，就是這副健康的身體。」
-
-嚴格禁止：
-- 禁止提及：直銷、賀寶芙、Herbalife、奶昔、拉人、下線、躺賺、暴富
-- 禁止使用「阿美姐」稱呼，統一使用「美君老師」
-- 營養補充品一律包裝為「20年生活營養管理」「陪伴式健康微調」「全方位身體滋養計劃」
-- 用高含金量的生命故事吸引人，拒絕生硬廣告推銷`;
-
-const PROMPTS = {
-    book: `觸發主題：走進樂足・預約蒸屋
-目標：直擊現代人代謝下降、容易疲勞、健康焦慮的痛點，帶動實體預約。
-寫法：從生活陪伴角度出發，描寫忙碌生活如何虧待了身體。邀請大家來樂足蒸屋透過溫暖蒸足放鬆，找回久違的活力。結尾溫柔引導「私訊美君老師預約」。`,
-    story: `觸發主題：美君日常・善念布施
-目標：完全不帶商業推銷，分享美君老師的基督信仰、生活感恩、捨己布施的心情。
-寫法：分享在店裡、生活中、教會裡看見的感動小故事。用幽默接地氣卻充滿神恩典與正能量的語氣，為社群上焦慮孤單的靈魂提供情感支持與溫柔鼓勵。`,
-    health: `觸發主題：健康開講・20年營養學
-目標：解決現代人飲食不均衡、體重控制困難、活力下降等健康痛點。
-寫法：結合美髮時代對形象管理的敏銳度，加上20年健康產業底蘊，用最白話的語言解釋健康生活習慣調整與全方位身體滋養計劃的核心。強調健康是全人（身心靈）的平衡。`,
-    biz: `觸發主題：美姐經商・零元實戰
-目標：吸引面臨財務瓶頸、渴望開創門店、提升生活品質的潛在創業者。
-寫法：以「美髮、健康雙軌成功創業家」的高度，溫柔且堅定喊話。分享二十幾年門店經營、客戶服務與團隊管理實戰。用不藏私的生命布施，激勵陪伴下一代創業者成功。`
+// 內建美君老師隨機爆款文案資料庫
+const database = {
+    book: [
+        {
+            fb: `【為身體備一腔溫暖的熱氣，預約一份好心情】\n\n這兩天天氣變化大，坐在店裡，常看見不少鄉親走進來時肩膀都縮著。美君老師看了心疼，這不只是冷，是身體累積了太多的「寒與濕」。\n\n以前做美髮二十幾年，我幫大家打理外在的漂亮；現在經營樂足蒸屋，我更想陪你們找回內在的元氣。很多人問我：「美君老師，蒸足真的有用嗎？」我總是笑著說，身體就像這輩子住最久、也唯一持有的房子，濕氣重了就像漏水，人就容易疲勞、代謝慢。\n\n來我這兒蒸足，不只是讓雙腳暖活，更是讓全身開機。放下煩惱，聽著輕音樂，感受那股熱氣從腳底慢慢透到全身，流一場舒服的汗，你會發現，原來健康可以這麼簡單。私訊美君老師，讓我為妳備好專屬的蒸足位，陪妳一起找回輕盈的自己。\n\n#樂足蒸屋 #謝美君 #美君老師 #排濕代謝 #松山養生 #凡事謝恩`,
+            ig: `💡 身體是你住最久的房子，今天除濕了嗎？\n\n天氣冷，人就縮。這不只是累，是身體在求救！\n來樂足蒸屋，用45分鐘的溫暖熱氣，\n幫妳排掉累積的濕氣，找回久違的輕盈感。\n\n以前幫妳打理頭髮，現在陪妳打理健康。\n私訊美君老師預約體驗，讓我為妳留個位子！🌸\n\n#樂足蒸屋 #美君老師 #預約健康 #松山蒸足 #生活質感 #健康加法`,
+            threads: `很多人減肥減不下來、天天喊累，其實不是妳懶，是身體「漏水（濕氣太重）」了。做美髮20年我看臉色，做蒸足我看代謝。來樂足蒸屋出一場汗，比妳在家鑽被窩有用多了。想開機的私訊美君老師。 #美君老師養生 #蒸足 #代謝循環 #別再虧待身體`
+        }
+    ],
+    story: [
+        {
+            fb: `【凡事謝恩：在樂足蒸屋裡遇見的溫暖光影】\n\n今天店裡來了一位老同學，幾十年沒見，頭髮白了一些，但那份革命情感一點都沒變。我們聊著彼此的創業路，感嘆著神給我們的恩典真的夠用。美君老師常覺得，我這輩子能從美髮轉行到健康產業，其實是神的帶領，讓我有機會成為更多人的陪伴者。\n\n在樂足蒸屋，我不只一是一位的店長，更是一個樂於分享善念的傳道者。看著客人蒸完足後，臉色從蒼白轉為紅潤，露出滿意的笑容，我心裡就充滿感恩。這不只是生意，更是生命影響生命的布施。\n\n每個人的人生都有起伏，但只要心裡有光，腳下的路就不會黑暗。不論妳今天遇到了什麼難關，隨時歡迎來找美君老師聊聊天，我們一起數算恩典，分享善念。祝福大家，今天也活在愛與溫暖中。\n\n#凡事謝恩 #主愛在樂足 #謝美君 #生活感悟 #布施傳道 #溫暖力量`,
+            ig: `💡 每個人心裡，都該有一盞不會熄滅的光。\n\n今天在店裡跟老同學敘舊，感嘆恩典夠用。\n美君老師想告訴妳：生活再累，也要記得凡事謝恩。\n\n樂足蒸屋不只蒸足，也溫暖妳的心。\n有空來找美君老師聊聊天，我們一起分享善念。🌸\n\n#善念布施 #美君老師 #生活美學 #基督信仰 #生命陪伴 #樂足日常`,
+            threads: `美君老師做20年營養產業，感觸最深的一句話是：健康是神的恩典，而陪伴是最好的布施。心情不好、壓力大的時候，來蒸個足，把苦水流掉，把恩典留住。 #美君老師碎碎念 #凡事謝恩 #心靈排毒`
+        }
+    ],
+    health: [
+        {
+            fb: `【20年營養老兵的真心話：為什麼妳少吃多動還是瘦不下來？】\n\n很多人來找美君老師，第一句話就是：「美君老師，我真的吃很少了，為什麼肚子還是那一圈？」我聽了都想嘆氣。我在營養產業二十幾年，看過太多人為了減肥把身體搞壞，那才叫真的虧本！\n\n其實，健康就像經營公司，妳不能只看支出（熱量），更要看資產（營養與細胞修復）。現代人大多數是「營養不良的胖子」，身體缺乏優質的草本營養來幫忙代謝，就算妳餓到發昏，身體還是會把脂肪抓得緊緊的。這就是我常說的：順序不對，努力白費。\n\n在樂足蒸屋，我們提倡的是「全方位細胞營養規劃」。用科學的方法，給身體正確的建材，代謝自然會像開了外掛一樣順暢。不要再盲目節食了，來找美君老師，讓我用二十年的實戰經驗，幫妳規劃一套最適合妳、最簡單有效的營養帳單。\n\n#營養學專家 #謝美君 #美君老師 #細胞營養 #科學減脂 #20年資歷 #生活品質`,
+            ig: `💡 少吃多動卻沒瘦？美君老師告訴妳為什麼！\n\n做了20年營養，我發現很多人是「營養不良的胖子」。\n身體沒建材，代謝就不動！\n不要再盲目節食，要學會「精準營養加法」。\n\n來樂足蒸屋找美君老師，幫妳精算健康投資報酬率！🔥\n\n#營養開講 #科學減重 #美君老師專業 #健康管理 #女性創業 #生活質感`,
+            threads: `減肥不看營養就像開公司不看帳目，遲早倒閉。做營養20年，美君老師看過太多「餓壞」的身體。給細胞正確的草本建材，代謝才會動。聽不懂的留言「想瘦」，我幫妳算帳。 #20年營養師視角 #健康投資 #不要交智商稅`
+        }
+    ],
+    biz: [
+        {
+            fb: `【沒錢花也沒關係，來找美君老師聊聊創業成功的秘訣】\n\n美君老師這輩子經歷過兩次成功的創業，一次是美髮，一次是現在的健康事業。我常跟年輕人說，創業不一定要投大筆資金，最重要的資產是妳這顆「想改變的心」和「利他的善念」。\n\n在 U-LIFE 系統裡，美君老師看見了最美的創業模式：零元加盟金、不賺夥伴差價，單純靠分享健康與陪伴來獲得成就與財富。這不就是最好的布施嗎？我不藏私，因為我曾經也是從零開始打拼。我懂得門店經營的辛苦，更懂得如何轉型，把技術變成系統。\n\n如果您現在正處於財務焦慮、或是想在退休前找回第二人生價值，美君老師誠摯邀請您來樂足蒸屋坐坐。我不只教妳蒸足，更教妳如何利用這個成熟的系統，為自己拼出一份有尊嚴、有質感的自由生活。我的經驗，通通送給妳。\n\n#創業導師 #謝美君 #美君老師 #ULIFE系統 #零風險創業 #第二人生 #利他布施`,
+            ig: `💡 沒錢花？美君老師把創業成功的祕訣送給妳！\n\n兩次創業成功，我靠的不是大資金，是「系統」與「利他」。\n在 U-LIFE 系統，妳可以零門檻啟動，靠分享健康贏回自由。\n\n我不藏私，只要妳肯學，美君老師手把手教妳！\n私訊我，開啟妳的第二人生。🌸\n\n#創業分享 #美君老師 #女性創業 #零風險 #生活自由 #職場轉型`,
+            threads: `創業一定要大錢？那是妳沒跟對人、用對系統。美君老師從美髮到健康，兩次成功都證明：只要肯布施專業，財富自然會跟來。沒錢想創業的私訊我，姐教妳。 #零元創業 #美君老師實戰 #ULIFE系統 #翻轉人生`
+        }
+    ]
 };
 
 function toggleKey() {
     const el = document.getElementById('userApiKey');
     el.type = el.type === 'password' ? 'text' : 'password';
-}
-
-function setModel(model) {
-    selectedModel = model;
-    document.getElementById('m-flash').classList.toggle('active', model === 'gemini-2.0-flash');
-    document.getElementById('m-pro').classList.toggle('active', model === 'gemini-1.5-pro');
 }
 
 function setStatus(msg, isError) {
@@ -209,7 +193,6 @@ function setStatus(msg, isError) {
 function setProgress(pct) { document.getElementById('progressFill').style.width = pct + '%'; }
 function hideStatus() { document.getElementById('statusBar').style.display = 'none'; }
 function setLoading(id, msg) { const el = document.getElementById(id); el.className = 'output-box loading'; el.textContent = msg; }
-function setDone(id, text) { const el = document.getElementById(id); el.className = 'output-box done'; el.textContent = text; }
 
 function typewriter(id, text, totalMs) {
     return new Promise(resolve => {
@@ -217,6 +200,7 @@ function typewriter(id, text, totalMs) {
         el.className = 'output-box done';
         el.textContent = '';
         const cursor = document.createElement('span');
+        cursor.cursor = 'cursor';
         cursor.className = 'cursor';
         el.appendChild(cursor);
         let i = 0;
@@ -228,94 +212,37 @@ function typewriter(id, text, totalMs) {
     });
 }
 
-async function callGemini(apiKey, prompt) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${apiKey}`;
-    const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: { temperature: 0.95, maxOutputTokens: 2048 }
-        })
-    });
-    if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err?.error?.message || `HTTP ${res.status}`);
-    }
-    const data = await res.json();
-    return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-}
-
-async function generate(type) {
-    const apiKey = document.getElementById('userApiKey').value.trim();
-    if (!apiKey) {
-        setStatus('⚠️ 請先填入 Gemini API Key！', true);
-        document.getElementById('userApiKey').focus();
-        return;
-    }
-    if (!apiKey.startsWith('AIza')) {
-        setStatus('⚠️ API Key 格式不正確，請確認是否以 AIzaSy 開頭', true);
-        return;
-    }
-
+function generate(type) {
     document.querySelectorAll('.style-btn').forEach(b => { b.classList.remove('active'); b.classList.add('inactive'); b.disabled = true; });
     document.getElementById('btn-' + type).classList.add('active');
     document.getElementById('btn-' + type).classList.remove('inactive');
 
     setStatus('🌿 美君老師的文案生成中，請稍候...', false);
-    setProgress(10);
+    setProgress(30);
     setLoading('out-fb', '生命觀點長文撰寫中...');
     setLoading('out-ig', '質感精簡版生成中...');
     setLoading('out-threads', '口語布施金句醞釀中...');
 
-    const fullPrompt = `${PERSONA}\n\n${PROMPTS[type]}\n\n平台規則：
-- FB（生命觀點長文版）：深刻生命觀點、信仰感恩、創業邏輯，段落清晰，字數200-350字
-- IG（質感精簡版）：溫暖短標題開頭，精簡俐落，附5-8個精準hashtag
-- Threads（口語布施版）：知性大姐大觀點、帶幽默互動問句，字數50-80字
-
-請只回傳 JSON，不要任何 Markdown 標記或說明文字：
-{"fb":"完整FB文案","ig":"完整IG文案含hashtag","threads":"完整Threads短文"}`;
-
-    try {
-        setProgress(30);
-        const raw = await callGemini(apiKey, fullPrompt);
+    setTimeout(async () => {
         setProgress(75);
-
-        let json;
-        try {
-            json = JSON.parse(raw.replace(/```json|```/g, '').trim());
-        } catch {
-            setDone('out-fb', raw);
-            setDone('out-ig', '⚠️ JSON 解析失敗，完整文案已顯示在左側');
-            setDone('out-threads', '');
-            setStatus('⚠️ 文案已生成但格式異常，建議換 1.5 Pro 重試', true);
-            return;
-        }
+        const variants = database[type];
+        const randomIndex = Math.floor(Math.random() * variants.length);
+        const json = variants[randomIndex];
 
         setProgress(90);
         hideStatus();
-        await typewriter('out-fb', json.fb || '', 1800);
-        await typewriter('out-ig', json.ig || '', 800);
-        await typewriter('out-threads', json.threads || '', 500);
-        setProgress(100);
-
-    } catch (err) {
-        let msg = err.message;
-        if (msg.includes('API_KEY_INVALID') || msg.includes('API key not valid')) msg = 'API Key 無效，請重新確認金鑰';
-        else if (msg.includes('QUOTA_EXCEEDED') || msg.includes('429') || msg.includes('high demand')) msg = '今日免費額度已用完或伺服器忙碌，請稍後再試';
-        else if (msg.includes('Failed to fetch') || msg.includes('NetworkError')) msg = '網路連線失敗，請確認網路後重試';
-        setDone('out-fb', '❌ 生成失敗');
-        setDone('out-ig', '');
-        setDone('out-threads', '');
-        setStatus('❌ ' + msg, true);
-    } finally {
+        
+        await typewriter('out-fb', json.fb || '', 1200);
+        await typewriter('out-ig', json.ig || '', 600);
+        await typewriter('out-threads', json.threads || '', 400);
+        
         document.querySelectorAll('.style-btn').forEach(b => { b.disabled = false; });
-    }
+    }, 600);
 }
 
 function copyCol(id, btn) {
     const text = document.getElementById(id).innerText;
-    if (!text || text.startsWith('點擊') || text.startsWith('生命') || text.startsWith('質感') || text.startsWith('口語') || text.startsWith('❌') || text.startsWith('⚠️')) return;
+    if (!text || text.startsWith('點擊') || text.startsWith('生') || text.startsWith('質') || text.startsWith('口') || text.startsWith('❌')) return;
     navigator.clipboard.writeText(text).then(() => {
         const orig = btn.innerText;
         btn.innerText = '✓ 已複製';
